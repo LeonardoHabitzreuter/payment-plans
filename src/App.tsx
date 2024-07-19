@@ -8,21 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "./components/Form";
 import { testFloatPrecision } from "./utils";
 import ErrorMessage from "./components/ErrorMessage";
-
-type BillingFrequency = 'Days' | 'Weeks' | 'Months'
-type TrialPeriod = 'None' | 'Days' | 'Weeks' | 'Months'
-type Duration = 'Never Ends' | 'Customize'
-
-type FormInputs = {
-  initialPrice?: number
-  billingFrequencyNumber: number
-  billingFrequencyPeriod: BillingFrequency
-  trialPeriodNumber?: number
-  trialPeriod: TrialPeriod
-  duration: Duration
-  payment: number
-  billingCycles?: number
-}
+import ResultContainer from "./components/ResultContainer";
+import { BillingFrequency, Duration, FormInputs, TrialPeriod } from "./models";
 
 const BILLING_FREQUENCIES: (BillingFrequency | undefined)[] = [undefined, 'Days', 'Weeks', 'Months']
 const DURATION_OPTIONS: Duration[] = ['Never Ends', 'Customize']
@@ -47,7 +34,7 @@ export const formSchema = z.object({
   trialPeriod: z.string({ required_error: TRIAL_PERIOD_ERROR }).refine(x => !!x, { message: TRIAL_PERIOD_ERROR } ),
   payment: z.coerce.number({ invalid_type_error: NAN_ERROR }).finite().positive().refine(testFloatPrecision(2), { message: DECIMAL_ERROR } ),
   duration: z.string(),
-  billingCycles: z.coerce.number({ invalid_type_error: NAN_ERROR }).int().finite().positive(),
+  billingCycles: z.coerce.number({ invalid_type_error: NAN_ERROR }).int().finite().positive().optional(),
 })
 
 function App() {
@@ -174,21 +161,25 @@ function App() {
             )}
           />
 
-          {form.watch('duration') === 'Customize' && (
-            <FormField
-              control={form.control}
-              name="billingCycles"
-              render={({ field }) => (
-                <FormItem className="col-span-1">
-                  <FormLabel>Billing Cycles</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <div className="col-span-1">
+            {form.watch('duration') === 'Customize' && (
+              <FormField
+                control={form.control}
+                name="billingCycles"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Billing Cycles</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+          </div>
+
+          <ResultContainer fields={form.watch()} />
 
           <Button type="submit" className='w-full sm:w-52 justify-self-end'>Submit</Button>
         </form>
