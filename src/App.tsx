@@ -61,7 +61,7 @@ function App() {
               <FormItem className="col-span-1">
                 <FormLabel>Initial Price</FormLabel>
                 <FormControl>
-                  <Input type="number" inputMode="decimal" {...field} />
+                  <Input type="number" inputMode="decimal" placeholder="0.00" leftIcon='$' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -79,7 +79,7 @@ function App() {
                 render={({ field }) => (
                   <FormItem className="col-span-1">
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" placeholder="1" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -119,7 +119,7 @@ function App() {
               <FormItem className="col-span-1">
                 <FormLabel>{billingPeriodToPayment[form.watch('billingFrequencyPeriod')]} Payment</FormLabel>
                 <FormControl>
-                  <Input type="number" inputMode="decimal" {...field} />
+                  <Input type="number" inputMode="decimal" placeholder="0.00" leftIcon='$' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -138,7 +138,7 @@ function App() {
                 render={({ field }) => (
                   <FormItem className="col-span-1">
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" placeholder="1" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -197,7 +197,7 @@ function App() {
           />
 
           <div className="col-span-1">
-            {form.watch('duration') === 'Customize' && (
+            {form.watch('duration') !== 'Never Ends' && (
               <FormField
                 control={form.control}
                 name="billingCycles"
@@ -205,7 +205,7 @@ function App() {
                   <FormItem>
                     <FormLabel>Billing Cycles</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" placeholder="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
