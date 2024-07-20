@@ -1,7 +1,7 @@
 import Button from "./components/Button"
 import Input from "./components/Input"
 import Label from "./components/Label"
-import Select from "./components/Select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/Select"
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,9 +11,9 @@ import ErrorMessage from "./components/ErrorMessage";
 import ResultContainer from "./components/ResultContainer";
 import { BillingFrequency, Duration, FormInputs, TrialPeriod } from "./models";
 
-const BILLING_FREQUENCIES: (BillingFrequency | undefined)[] = [undefined, 'Days', 'Weeks', 'Months']
+const BILLING_FREQUENCIES: BillingFrequency[] = ['Days', 'Weeks', 'Months']
 const DURATION_OPTIONS: Duration[] = ['Never Ends', 'Customize']
-const TRIAL_PERIODS: (TrialPeriod | undefined)[] = [undefined, 'None', 'Days', 'Weeks', 'Months']
+const TRIAL_PERIODS: TrialPeriod[] = ['None', 'Days', 'Weeks', 'Months']
 
 const BILLING_FREQUENCY_ERROR = 'Please, provide a number and a period'
 const TRIAL_PERIOD_ERROR = 'Please, provide a trial period'
@@ -37,9 +37,11 @@ export const formSchema = z.object({
   billingCycles: z.coerce.number({ invalid_type_error: NAN_ERROR }).int().finite().positive().optional(),
 })
 
+const defaultValues: Partial<FormInputs> = { duration: 'Never Ends' }
+
 function App() {
   const form = useForm<FormInputs>({
-    defaultValues: { duration: 'Never Ends' },
+    defaultValues,
     resolver: zodResolver(formSchema),
     shouldUseNativeValidation: false
   })
@@ -87,9 +89,20 @@ function App() {
                 name="billingFrequencyPeriod"
                 render={({ field }) => (
                   <FormItem className="col-span-3">
-                    <FormControl>
-                      <Select options={BILLING_FREQUENCIES} {...field} />
-                    </FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a period" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {BILLING_FREQUENCIES.map(option => (
+                          <SelectItem value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -135,9 +148,20 @@ function App() {
                 name="trialPeriod"
                 render={({ field }) => (
                   <FormItem className="col-span-3">
-                    <FormControl>
-                      <Select options={TRIAL_PERIODS} {...field} />
-                    </FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a period" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {TRIAL_PERIODS.map(option => (
+                          <SelectItem value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -153,9 +177,20 @@ function App() {
             render={({ field }) => (
               <FormItem className="col-span-1">
                 <FormLabel>Duration</FormLabel>
-                <FormControl>
-                  <Select options={DURATION_OPTIONS} {...field}/>
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={defaultValues.duration}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {DURATION_OPTIONS.map(option => (
+                      <SelectItem value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -181,7 +216,7 @@ function App() {
 
           <ResultContainer fields={form.watch()} />
 
-          <Button type="submit" className='w-full sm:w-52 justify-self-end'>Submit</Button>
+          <Button type="submit" className='w-full sm:w-52 justify-self-end sticky sm:fixed bottom-8 '>Submit</Button>
         </form>
       </FormProvider>
     </div>
