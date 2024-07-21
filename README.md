@@ -1,16 +1,16 @@
 # Payment form
 This project uses:
 
++ PNPM
 + React
 + ViteJS
 + Typescript
 + React Hook Form
-+ PNPM
 + ESLint
 + TailwindCSS for styling
 + Zod for schema validations
 
 ## Running locally
-`pnpm install`
+[Install PNPM](https://pnpm.io/installation)
 
-`pnpm run dev`
+`pnpm install && pnpm run dev`
