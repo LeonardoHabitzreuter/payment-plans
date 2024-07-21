@@ -2,7 +2,12 @@
 export default {
   content: ['./src/*.tsx', './src/**/*.tsx'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'primary': '#A4C627',
+        'primary-600': '#97ad45'
+      },
+    },
   },
   plugins: ['@tailwindcss/forms'],
 }
