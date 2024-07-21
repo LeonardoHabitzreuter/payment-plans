@@ -10,6 +10,7 @@ import { testFloatPrecision } from "./utils";
 import ErrorMessage from "./components/ErrorMessage";
 import ResultContainer from "./components/ResultContainer";
 import { BillingFrequency, Duration, FormInputs, TrialPeriod } from "./models";
+import { toast } from './components/Toast'
 
 const BILLING_FREQUENCIES: BillingFrequency[] = ['Days', 'Weeks', 'Months']
 const DURATION_OPTIONS: Duration[] = ['Never Ends', 'Customize']
@@ -48,12 +49,16 @@ function App() {
 
   const { errors } = form.formState
 
+  const onSubmit = () => {
+    toast({ title: 'All fields are valid!' })
+  }
+
   return (
     <div className='p-8 min-h-screen max-w-[1200px] bg-white mx-auto'>
       <h2 className="text-2xl font-black text-gray-900 text-center">Set up your subscription</h2>
 
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(() => {})} className="grid sm:grid-cols-3 gap-4 sm:gap-10 mt-8" >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid sm:grid-cols-3 gap-4 sm:gap-10 mt-8" >
           <FormField
             control={form.control}
             name="initialPrice"
@@ -69,9 +74,7 @@ function App() {
           />
 
           <div className="col-span-1 space-y-2">
-            <Label hasError={!!(errors.billingFrequencyNumber || errors.billingFrequencyPeriod)}>
-              Billing Frequency
-            </Label>
+            <Label>Billing Frequency</Label>
             <div className="grid grid-cols-4 gap-2">
               <FormField
                 control={form.control}
@@ -127,9 +130,7 @@ function App() {
           />
 
           <div className="col-span-1 space-y-2">
-            <Label hasError={!!(errors.trialPeriodNumber || errors.trialPeriod)}>
-              Trial Period
-            </Label>
+            <Label>Trial Period</Label>
             <div className="grid grid-cols-4 gap-2">
               <FormField
                 disabled={form.watch('trialPeriod') === 'None'}
@@ -216,7 +217,7 @@ function App() {
 
           <ResultContainer fields={form.watch()} />
 
-          <Button type="submit" size='lg' className='sm:col-span-3 w-full justify-self-center'>Submit</Button>
+          <Button type="submit" size='lg' className='sm:col-span-3 w-full justify-self-center'>Validate</Button>
         </form>
       </FormProvider>
     </div>

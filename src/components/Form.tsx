@@ -85,11 +85,10 @@ const FormItem = React.forwardRef<
 FormItem.displayName = 'FormItem'
 
 const FormLabel = ({ ...props }: React.ComponentProps<typeof Label>) => {
-  const { error, formItemId } = useFormField()
+  const { formItemId } = useFormField()
 
   return (
     <Label
-      hasError={!!error}
       htmlFor={formItemId}
       {...props}
     />
