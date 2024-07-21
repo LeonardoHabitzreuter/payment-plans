@@ -4,9 +4,14 @@
 
 :root {
   font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #110c41;
 }
 
-#root {
-  height: 100vh;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

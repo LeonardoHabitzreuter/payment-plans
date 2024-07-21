@@ -50,7 +50,7 @@ function App() {
 
   return (
     <div className='p-8 min-h-screen max-w-[1200px] bg-white mx-auto'>
-      <h2 className="text-2xl font-semibold text-gray-900 text-center">Set up your subscription</h2>
+      <h2 className="text-2xl font-black text-gray-900 text-center">Set up your subscription</h2>
 
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(() => {})} className="grid sm:grid-cols-3 gap-4 sm:gap-10 mt-8" >
@@ -216,7 +216,7 @@ function App() {
 
           <ResultContainer fields={form.watch()} />
 
-          <Button type="submit" className='w-full sm:w-52 justify-self-end sticky sm:fixed bottom-8 '>Submit</Button>
+          <Button type="submit" size='lg' className='sm:col-span-3 w-full justify-self-center'>Submit</Button>
         </form>
       </FormProvider>
     </div>
